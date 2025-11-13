@@ -1,5 +1,11 @@
 <template>
-  <dialog open class="dialog" role="dialog" aria-modal="true" aria-label="New Task">
+  <dialog
+    open
+    class="dialog"
+    role="dialog"
+    aria-modal="true"
+    aria-label="New Task"
+  >
     <form @submit.prevent="onSubmit">
       <h2>New Task</h2>
       <label>
@@ -8,7 +14,11 @@
       </label>
       <label>
         Description
-        <textarea v-model.trim="description" name="description" maxlength="500"></textarea>
+        <textarea
+          v-model.trim="description"
+          name="description"
+          maxlength="500"
+        ></textarea>
       </label>
       <label>
         Priority
@@ -27,30 +37,52 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useTasksStore } from '@/stores/tasks'
+import { ref } from "vue";
+import { useTasksStore } from "@/stores/tasks";
 
-const emit = defineEmits<{ (e: 'close'): void; (e: 'created'): void }>()
-const store = useTasksStore()
+const emit = defineEmits<{ (e: "close"): void; (e: "created"): void }>();
+const store = useTasksStore();
 
-const title = ref('')
-const description = ref('')
-const priority = ref<'low'|'medium'|'high'>('medium')
+const title = ref("");
+const description = ref("");
+const priority = ref<"low" | "medium" | "high">("medium");
 
 async function onSubmit() {
   await store.createTask({
     title: title.value,
     description: description.value,
-    status: 'pending',
+    status: "pending",
     priority: priority.value,
-  })
-  emit('created')
+  });
+  emit("created");
 }
 </script>
 
 <style scoped>
-.dialog { border: none; border-radius: .75rem; padding: 0; box-shadow: 0 10px 30px rgba(0,0,0,.15); }
-form { display: grid; gap: .75rem; padding: 1rem; width: min(480px, 90vw); }
-label { display: grid; gap: .25rem; }
-.actions { display: flex; justify-content: flex-end; gap: .5rem; margin-top: .5rem; }
+.dialog {
+  position: absolute;
+  top: 200px;
+  left: 0;
+  right: 0;
+  border: none;
+  border-radius: 0.75rem;
+  padding: 0;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+form {
+  display: grid;
+  gap: 0.75rem;
+  padding: 1rem;
+  width: min(480px, 90vw);
+}
+label {
+  display: grid;
+  gap: 0.25rem;
+}
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
 </style>
