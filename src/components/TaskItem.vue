@@ -1,5 +1,5 @@
 <template>
-  <li @click="previewTask" class="item" :class="task.status">
+  <li class="item" :class="task.status">
     <label class="check">
       <input
         type="checkbox"
@@ -38,12 +38,6 @@ defineEmits<{
   (e: "toggle", task: Task): void;
   (e: "delete", task: Task): void;
 }>();
-
-const previewTask = () => {
-  // TODO: implement
-  // console.log(props.task);
-  // history.pushState(null, "", `task/${props.task.id}`);
-};
 </script>
 
 <style scoped>

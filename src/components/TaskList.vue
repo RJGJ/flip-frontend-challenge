@@ -19,7 +19,7 @@
     </div>
 
     <div v-if="store.loading" class="state">Loading…</div>
-    <div v-else-if="!store.tasks.length" class="state">No tasks</div>
+    <div v-else-if="!sorted.length" class="state">No tasks</div>
 
     <TransitionGroup v-else class="list" name="fade" tag="ul">
       <TaskItem
@@ -28,21 +28,18 @@
         :task="t"
         @toggle="onToggle"
         @delete="onDelete"
+        @click="onPreview(t)"
       />
     </TransitionGroup>
 
     <Transition name="fade">
       <TaskForm
         v-if="showForm"
-        @close="showForm = false"
+        :task="taskToPreview"
+        @close="onCloseForm"
         @created="onCreated"
       />
     </Transition>
-
-    <!-- TODO: implement -->
-    <!-- <Transition name="fade">
-      <TaskModal v-if="task" :task="task" @close="task = null" />
-    </Transition> -->
   </section>
 </template>
 
@@ -58,6 +55,7 @@ const store = useTasksStore();
 const status = ref<"all" | "pending" | "completed">("all");
 const sortBy = ref<"created_at" | "priority">("created_at");
 const showForm = ref(false);
+const taskToPreview = ref<Task | null>(null);
 
 const sorted = computed(() => {
   let arr = [...store.tasks];
@@ -71,6 +69,16 @@ const sorted = computed(() => {
   }
   return arr;
 });
+
+function onPreview(task: Task) {
+  taskToPreview.value = task;
+  window.dispatchEvent(new CustomEvent("open-new-task"));
+}
+
+function onCloseForm() {
+  taskToPreview.value = null;
+  showForm.value = false;
+}
 
 function reload() {
   localStorage.setItem("status", status.value);
