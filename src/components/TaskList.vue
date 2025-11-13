@@ -52,7 +52,7 @@ import { useTasksStore } from "@/stores/tasks";
 import type { Task } from "@/types/task";
 import TaskItem from "./TaskItem.vue";
 import TaskForm from "./TaskForm.vue";
-import TaskModal from "./TaskModal.vue";
+import { S } from "vitest/dist/chunks/config.Cy0C388Z.js";
 
 const store = useTasksStore();
 const status = ref<"all" | "pending" | "completed">("all");
@@ -73,6 +73,8 @@ const sorted = computed(() => {
 });
 
 function reload() {
+  localStorage.setItem("status", status.value);
+  localStorage.setItem("sortBy", sortBy.value);
   store.fetchTasks();
 }
 
@@ -91,7 +93,16 @@ function onOpenNew() {
   showForm.value = true;
 }
 
+function setupFilters() {
+  const savedStatus = localStorage.getItem("status") ?? "all";
+  const savedSortBy = localStorage.getItem("sortBy") ?? "created_at";
+  console.log(savedStatus, savedSortBy);
+  status.value = savedStatus as "all" | "pending" | "completed";
+  sortBy.value = savedSortBy as "created_at" | "priority";
+}
+
 onMounted(() => {
+  setupFilters();
   store.fetchTasks();
   window.addEventListener("open-new-task", onOpenNew as EventListener);
 });
