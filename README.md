@@ -42,12 +42,14 @@ If you see a service worker warning, run: `npx msw init public/ --save` (creates
 ## MSW Mock API
 
 Endpoints (unchanged):
+
 - GET `/api/tasks`
 - POST `/api/tasks`
 - PATCH `/api/tasks/:id`
 - DELETE `/api/tasks/:id`
 
 Simulate failures for retry/backoff:
+
 - GET `/api/tasks?fail=429` → rate‑limit
 - POST `/api/tasks?fail=500` → server error
 
@@ -62,6 +64,7 @@ Example test: `src/stores/tasks.spec.ts`.
 ## Challenge Brief (Summary)
 
 Build a resilient Task Management UI with:
+
 - Browse with sort (priority/created_at) and filter (all/pending/completed)
 - Create/Edit/Delete with optimistic UI and rollback
 - Inline toggle complete
@@ -74,13 +77,13 @@ Task type:
 
 ```ts
 export interface Task {
-  id: number
-  title: string
-  description: string
-  status: 'pending' | 'completed'
-  priority: 'low' | 'medium' | 'high'
-  created_at: string
-  updated_at: string
+  id: number;
+  title: string;
+  description: string;
+  status: "pending" | "completed";
+  priority: "low" | "medium" | "high";
+  created_at: string;
+  updated_at: string;
 }
 ```
 
@@ -103,31 +106,32 @@ Good luck and have fun!
 **Backend:** Mocked with MSW (Mock Service Worker) — already configured  
 **Estimated Time:** 3–4 hours  
 **Repository:**
- 
+
 ```bash
 git clone git@bitbucket.org:flipconnect/flip-frontend-challenge-starter.git
 ```
 
 ## 🎯 Objective
+
 Build a production-grade Task Management Application that demonstrates:
- 
+
 - solid front-end architecture
 - robust error and retry handling
 - strict TypeScript typing
 - clean UX and accessibility practices
- 
+
 The provided repo includes everything you need — no Laravel or external backend required. The mock API runs in-browser using MSW.
 
 ## 🧱 Provided in the Starter Repo
- 
+
 - Vue 3 + Vite + TypeScript + Pinia configured
 - MSW mock API intercepting `/api/tasks` with seed data
 - Axios client (`src/api/http.ts`)
 - Vitest unit testing setup
 - ESLint + TypeScript strict mode
- 
+
 Project structure:
- 
+
 ```
 src/
    api/
@@ -139,38 +143,40 @@ src/
 ```
 
 ## 🧩 Functional Requirements
- 
+
 1. Task List View
+
    - Display tasks (title, description, status, priority, created_at, updated_at)
    - Filter by status (all / pending / completed)
    - Sort by priority or creation date
    - Show loading and empty states
    - Persist user filter/sort preferences
- 
+
 2. Task Creation & Editing
+
    - Modal or page form to create/edit tasks
    - Validate fields and show feedback
    - Optimistic updates with rollback on failure
    - Inline validation for errors
- 
+
 3. Completion & Deletion
    - Inline toggle for marking tasks complete/incomplete
    - Delete with confirmation dialog
    - Avoid full list re-fetch; update locally and sync with API
- 
+
 ## ⚙️ Non-Functional Requirements
- 
+
 - Resilience: Retry with exponential backoff on 429/5xx errors
 - Offline Handling: Detect offline, queue mutations, retry on reconnect
 - Cancellation: Cancel stale requests on rapid filter/sort changes
 - Architecture: Use composables (e.g., `useTasks`, `useRetryBackoff`)
 - TypeScript: Strict types; avoid `any`
 - UI/UX: Accessible keyboard shortcuts (N = new task, Esc = close modal), ARIA labels, focus management, responsive layout
- 
+
 ## 🔌 Mock API (MSW)
- 
+
 Endpoints:
- 
+
 ```bash
 GET    /api/tasks
 POST   /api/tasks
@@ -179,31 +185,31 @@ DELETE /api/tasks/:id
 ```
 
 Failure Simulation
- 
-| Example                | Description                        |
-|------------------------|------------------------------------|
-| `/api/tasks?fail=429`  | Simulates rate limit (429)         |
-| `/api/tasks?fail=500`  | Simulates server error (500)       |
- 
+
+| Example               | Description                  |
+| --------------------- | ---------------------------- |
+| `/api/tasks?fail=429` | Simulates rate limit (429)   |
+| `/api/tasks?fail=500` | Simulates server error (500) |
+
 Use these to showcase retry and rollback behavior.
 
 ## 🧪 Testing
- 
+
 Required
- 
+
 - One Pinia store test (success + failure)
 - One component test (validation or toggle)
- 
+
 Optional
- 
+
 - One end-to-end test covering create → toggle → delete
- 
+
 Vitest and MSW integration are already wired in.
 
 ## ⭐ Senior+ Scenario Add-Ons (Select 2–3)
- 
+
 Implement any 2–3 within the timebox:
- 
+
 - Offline-First with Conflict Resolution: cache GET, queue mutations, replay on reconnect, resolve conflicts
 - URL-Driven State & Deep Linking: reflect filters/sort/pagination in URL
 - Large List Performance: windowed/virtualized list for 5,000+ tasks
@@ -212,42 +218,42 @@ Implement any 2–3 within the timebox:
 - Feature Flag + Analytics: lightweight flags, analytics queue with retry
 - RBAC-Lite: simulate viewer vs editor roles
 - i18n & Timezones: two locales; timezone-aware times
- 
+
 Document chosen add-ons, trade-offs, and assumptions in your README.
 
 ## 📦 Deliverables
- 
+
 - Public Git repo (no node_modules or vendor)
 - README including:
-   - Setup & run instructions
-   - Time spent
-   - Selected add-ons
-   - Assumptions/trade-offs
-   - Architecture notes on scaling and offline sync
-   - Meaningful commit history (atomic commits)
- 
+  - Setup & run instructions
+  - Time spent
+  - Selected add-ons
+  - Assumptions/trade-offs
+  - Architecture notes on scaling and offline sync
+  - Meaningful commit history (atomic commits)
+
 ## 📊 Evaluation Criteria
- 
-| Category | Weight | What We Look For |
-|---|---:|---|
-| TypeScript & Types | 25% | Strict typing, no `any`, clear interfaces |
-| Architecture & State | 25% | Composables, Pinia structure, separation |
-| Vue 3 & Pinia Mastery | 20% | Composition API fluency, reactive control |
-| Resilience & Error Handling | 15% | Retry/backoff, rollback, offline queue |
-| UI/UX & Accessibility | 10% | Responsive layout, keyboard support |
-| Testing | 5% | Focused, meaningful unit tests |
- 
+
+| Category                    | Weight | What We Look For                          |
+| --------------------------- | -----: | ----------------------------------------- |
+| TypeScript & Types          |    25% | Strict typing, no `any`, clear interfaces |
+| Architecture & State        |    25% | Composables, Pinia structure, separation  |
+| Vue 3 & Pinia Mastery       |    20% | Composition API fluency, reactive control |
+| Resilience & Error Handling |    15% | Retry/backoff, rollback, offline queue    |
+| UI/UX & Accessibility       |    10% | Responsive layout, keyboard support       |
+| Testing                     |     5% | Focused, meaningful unit tests            |
+
 Bonus: search (debounce + cancel), dark mode, smooth animations.
 
 ## 🚫 What Not To Do
- 
+
 - Don’t modify the MSW mock logic
 - Don’t use Vue 2 or Options API
 - Don’t disable TypeScript checks
 - Don’t commit dependencies
- 
+
 ## ▶️ How To Run
- 
+
 ```bash
 git clone git@bitbucket.org:flipconnect/flip-frontend-challenge-starter.git
 cd flip-frontend-challenge-starter
@@ -261,9 +267,18 @@ npm run dev
 Visit → http://localhost:5173
 
 ## 🕓 Timebox
- 
+
 Spend no more than 3–4 hours total. Prefer clarity and maintainability over volume.
 
 ## 💬 Questions
- 
+
 If something is unclear, document your assumptions in the README. We evaluate decision-making and communication as much as code.
+
+---
+
+## Dev Checkist
+
+- [x] completed all the CRUD states
+- [x] completed the handling of empty state
+- [ ] handling of rate exponential backoff for 429/5xx errors
+      I decided to show a generic string error to the users on the `fetchTasks()` fucntion on the tasks store. In my excperience showing a blob of stasktrace to the user makes them beleave that the website is (super) broken. It's better to have some kind of logging int he background that the devs can see to find the error.
