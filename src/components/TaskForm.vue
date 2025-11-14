@@ -58,20 +58,28 @@ const priority = ref<"low" | "medium" | "high">(
 
 async function onSubmit() {
   if (props.task) {
-    await store.updateTask(props.task.id, {
-      title: title.value,
-      description: description.value,
-      priority: priority.value,
-    });
+    store
+      .updateTask(props.task.id, {
+        title: title.value,
+        description: description.value,
+        priority: priority.value,
+      })
+      .catch(() => {
+        alert("Failed to update task");
+      });
     emit("close");
     return;
   }
-  await store.createTask({
-    title: title.value,
-    description: description.value,
-    status: "pending",
-    priority: priority.value,
-  });
+  store
+    .createTask({
+      title: title.value,
+      description: description.value,
+      status: "pending",
+      priority: priority.value,
+    })
+    .catch(() => {
+      alert("Failed to create task");
+    });
   emit("created");
 }
 </script>

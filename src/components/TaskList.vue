@@ -104,7 +104,6 @@ function onOpenNew() {
 function setupFilters() {
   const savedStatus = localStorage.getItem("status") ?? "all";
   const savedSortBy = localStorage.getItem("sortBy") ?? "created_at";
-  console.log(savedStatus, savedSortBy);
   status.value = savedStatus as "all" | "pending" | "completed";
   sortBy.value = savedSortBy as "created_at" | "priority";
 }

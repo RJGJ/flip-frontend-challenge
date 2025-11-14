@@ -282,6 +282,7 @@ If something is unclear, document your assumptions in the README. We evaluate de
 - [x] completed the handling of empty state
 - [x] handling of rate exponential backoff for 429/5xx errors
       I decided to show a generic string error to the users on the `fetchTasks()` fucntion on the tasks store. In my excperience showing a blob of stasktrace to the user makes them beleave that the website is (super) broken. It's better to have some kind of logging int he background that the devs can see to find the error.
+- [x] optimistic updates and rollback
 
 ## Other notes
 
