@@ -31,7 +31,9 @@
         </label>
         <div class="actions">
           <button type="button" @click="$emit('close')">Cancel</button>
-          <button type="submit" :disabled="!title">Create</button>
+          <button type="submit" :disabled="!title">
+            {{ task ? "Save" : "Create" }}
+          </button>
         </div>
       </form>
     </dialog>
@@ -55,6 +57,15 @@ const priority = ref<"low" | "medium" | "high">(
 );
 
 async function onSubmit() {
+  if (props.task) {
+    await store.updateTask(props.task.id, {
+      title: title.value,
+      description: description.value,
+      priority: priority.value,
+    });
+    emit("close");
+    return;
+  }
   await store.createTask({
     title: title.value,
     description: description.value,
@@ -67,10 +78,6 @@ async function onSubmit() {
 
 <style scoped>
 .dialog {
-  /* position: absolute;
-  top: 200px;
-  left: 0;
-  right: 0; */
   border: none;
   border-radius: 0.75rem;
   padding: 0;

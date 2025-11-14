@@ -1,30 +1,33 @@
 <template>
   <div class="modal" @click="onOverlayClick">
-    <div class="modal__content" @click.stop">
+    <div class="modal__content" @click.stop>
       <slot />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue';
+import { onBeforeUnmount, onMounted } from "vue";
 
 const emit = defineEmits<{
-  (e: 'close'): void
+  (e: "close"): void;
 }>();
 
 const onOverlayClick = () => {
-  document.documentElement.classList.remove('no-scroll');
-  emit('close');
-}
+  document.documentElement.classList.remove("no-scroll");
+  emit("close");
+};
 
 onMounted(() => {
-  document.documentElement.classList.add('no-scroll');
-})
+  document.documentElement.classList.add("no-scroll");
+});
+
+onBeforeUnmount(() => {
+  document.documentElement.classList.remove("no-scroll");
+});
 </script>
 
 <style scoped>
-
 .modal {
   position: fixed;
   top: 0;
@@ -32,7 +35,7 @@ onMounted(() => {
   right: 0;
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.5);
-  z-index: 9999
+  z-index: 9999;
 }
 
 .modal__content {
@@ -40,5 +43,4 @@ onMounted(() => {
   display: flex;
   justify-content: center;
 }
-
 </style>
